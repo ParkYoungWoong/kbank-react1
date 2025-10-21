@@ -6,6 +6,7 @@ export default function Default() {
       <header>
         <NavLink to="/">Home</NavLink>
         <NavLink to="/about">About</NavLink>
+        <NavLink to="/movies">Movies</NavLink>
       </header>
       <Outlet />
       <ScrollRestoration />
