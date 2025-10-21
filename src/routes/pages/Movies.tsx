@@ -1,30 +1,15 @@
-import { useState } from 'react'
 import { Link, Outlet } from 'react-router'
-import axios from 'axios'
 import Button from '@/components/Button'
 import Loader from '@/components/Loader'
+import { useMovieStore } from '@/stores/movie'
 
-export interface Movie {
-  Title: string
-  Year: string
-  imdbID: string
-  Type: string
-  Poster: string
-}
 export default function Movies() {
-  const [searchText, setSearchText] = useState('')
-  const [movies, setMovies] = useState<Movie[]>([])
-  const [loading, setLoading] = useState(false)
+  const searchText = useMovieStore(s => s.searchText)
+  const setSearchText = useMovieStore(s => s.setSearchText)
+  const fetchMovies = useMovieStore(s => s.fetchMovies)
+  const loading = useMovieStore(s => s.loading)
+  const movies = useMovieStore(s => s.movies)
 
-  async function fetchMovies() {
-    setLoading(true)
-    const { data } = await axios.get(
-      `https://omdbapi.com?apikey=7035c60c&s=${searchText}`
-    )
-    const movies = data.Search
-    setMovies(movies)
-    setLoading(false)
-  }
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     fetchMovies()
