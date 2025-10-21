@@ -1,4 +1,4 @@
-import api, { ACCESS_TOKEN_NAME } from '@/lib/api'
+import { ACCESS_TOKEN_NAME } from '@/lib/api'
 import { redirect } from 'react-router'
 
 async function verifyToken() {
@@ -8,12 +8,12 @@ async function verifyToken() {
   return null
 
   // 또는 API로 Token 유효성을 확인합니다.
-  try {
-    await api.post('/auth/me')
-    return true
-  } catch (error) {
-    return null
-  }
+  // try {
+  //   await api.post('/auth/me')
+  //   return true
+  // } catch (error) {
+  //   return null
+  // }
 }
 
 // 페이지 접근 시 호출되는 로더(Loader) 함수!
