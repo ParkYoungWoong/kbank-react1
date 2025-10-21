@@ -1,21 +1,20 @@
-import { useState, useRef, useLayoutEffect } from 'react'
+import { useState } from 'react'
+import { useInput } from '@/hooks/input'
 
 export default function App() {
-  const [width, setWidth] = useState(0)
-  const divRef = useRef<HTMLDivElement>(null)
-
-  useLayoutEffect(() => {
-    if (divRef.current) {
-      const rect = divRef.current.getBoundingClientRect()
-      setWidth(rect.width)
-    }
-  }, [])
+  const name = useInput()
+  const password = useInput()
 
   return (
-    <div
-      ref={divRef}
-      style={{ width: '222px' }}>
-      <p>Width: {width}px</p>
-    </div>
+    <form>
+      <input
+        type="text"
+        {...name}
+      />
+      <input
+        type="password"
+        {...password}
+      />
+    </form>
   )
 }
