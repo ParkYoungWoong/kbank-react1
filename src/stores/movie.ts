@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { combine } from 'zustand/middleware'
+import { combine, persist, devtools } from 'zustand/middleware'
 import axios from 'axios'
 
 export interface Movie {
@@ -15,50 +15,58 @@ export interface Movie {
 // as 타입
 
 export const useMovieStore = create(
-  combine(
-    {
-      searchText: '',
-      loading: false,
-      movies: [] as Movie[]
-    },
-    function (set, get) {
-      return {
-        setSearchText(searchText: string) {
-          set({
-            searchText
-          })
+  devtools(
+    persist(
+      combine(
+        {
+          searchText: '',
+          loading: false,
+          movies: [] as Movie[]
         },
-        async fetchMovies() {
-          set({
-            loading: true
-          })
-          const { searchText } = get()
-          const { data } = await axios.get(
-            `https://omdbapi.com?apikey=7035c60c&s=${searchText}`
-          )
-          const movies = data.Search
-          set({
-            movies,
-            loading: false
-          })
+        function (set, get) {
+          return {
+            setSearchText(searchText: string) {
+              set({
+                searchText
+              })
+            },
+            async fetchMovies() {
+              set({
+                loading: true
+              })
+              const { searchText } = get()
+              const { data } = await axios.get(
+                `https://omdbapi.com?apikey=7035c60c&s=${searchText}`
+              )
+              const movies = data.Search
+              set({
+                movies,
+                loading: false
+              })
+            }
+          }
         }
+      ),
+      {
+        name: 'movie store',
+        version: 1
       }
-    }
+    )
   )
 )
 
-const obj = {
-  a: function () {
-    console.log(this)
-  },
-  b: () => {
-    console.log(this)
-  },
-  c() {
-    console.log(this)
-  }
-}
+// const obj = {
+//   a: function () {
+//     console.log(this) // 호출 위치
+//   },
+//   b: () => {
+//     console.log(this) // 선언 위치
+//   },
+//   c() {
+//     console.log(this) // 호출 위치
+//   }
+// }
 
-obj.a()
-obj.b()
-obj.c()
+// obj.a()
+// obj.b()
+// obj.c()
