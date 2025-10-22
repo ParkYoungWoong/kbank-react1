@@ -4,7 +4,7 @@ export default function About() {
   const count = useCountStore(s => s.count)
   // const increase = useCountStore(s => s.increase)
   // const decrease = useCountStore(s => s.decrease)
-  const { increase, decrease } = useCountStore(s => s.actions)
+  const { increase, decrease } = useCountStore(s => s.actions) // actions 상태로 액션 통합 사용!
 
   return (
     <>
