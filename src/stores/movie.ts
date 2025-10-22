@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { combine, persist, devtools } from 'zustand/middleware'
+import { combine, devtools } from 'zustand/middleware'
 import axios from 'axios'
 
 export interface Movie {
@@ -16,40 +16,34 @@ export interface Movie {
 
 export const useMovieStore = create(
   devtools(
-    persist(
-      combine(
-        {
-          searchText: '',
-          loading: false,
-          movies: [] as Movie[]
-        },
-        function (set, get) {
-          return {
-            setSearchText(searchText: string) {
-              set({
-                searchText
-              })
-            },
-            async fetchMovies() {
-              set({
-                loading: true
-              })
-              const { searchText } = get()
-              const { data } = await axios.get(
-                `https://omdbapi.com?apikey=7035c60c&s=${searchText}`
-              )
-              const movies = data.Search
-              set({
-                movies,
-                loading: false
-              })
-            }
+    combine(
+      {
+        searchText: '',
+        loading: false,
+        movies: [] as Movie[]
+      },
+      function (set, get) {
+        return {
+          setSearchText(searchText: string) {
+            set({
+              searchText
+            })
+          },
+          async fetchMovies() {
+            set({
+              loading: true
+            })
+            const { searchText } = get()
+            const { data } = await axios.get(
+              `https://omdbapi.com?apikey=7035c60c&s=${searchText}`
+            )
+            const movies = data.Search
+            set({
+              movies,
+              loading: false
+            })
           }
         }
-      ),
-      {
-        name: 'movie store',
-        version: 1
       }
     )
   )

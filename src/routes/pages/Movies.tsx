@@ -1,31 +1,25 @@
+import { useState } from 'react'
 import { Link, Outlet } from 'react-router'
 import Button from '@/components/Button'
 import Loader from '@/components/Loader'
-import { useMovieStore } from '@/stores/movie'
-import { useQuery } from '@tanstack/react-query'
+import { useMovieStore, useMovies } from '@/hooks/movies'
 
 export default function Movies() {
-  const searchText = useMovieStore(s => s.searchText)
+  const [inputText, setInputText] = useState('')
   const setSearchText = useMovieStore(s => s.setSearchText)
-  const fetchMovies = useMovieStore(s => s.fetchMovies)
-  const loading = useMovieStore(s => s.loading)
-  const movies = useMovieStore(s => s.movies)
-  useQuery({
-    queryKey: [],
-    queryFn: async function () {},
-    enabled: false
-  })
+  const { data: movies = [], isFetching: loading, refetch } = useMovies()
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    fetchMovies()
+    setSearchText(inputText)
   }
   return (
     <>
+      <button onClick={() => refetch()}>다시 가져오기!</button>
       <form onSubmit={handleSubmit}>
         <input
-          value={searchText}
-          onChange={e => setSearchText(e.target.value)}
+          value={inputText}
+          onChange={e => setInputText(e.target.value)}
         />
         <Button type="submit">검색</Button>
       </form>

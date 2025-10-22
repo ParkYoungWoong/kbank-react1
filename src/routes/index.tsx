@@ -48,6 +48,10 @@ const router = createBrowserRouter([
         Component: dynamic(() => import('./pages/SignIn'))
       },
       {
+        path: '/api/*',
+        element: null // /api 경로는 React Router가 처리하지 않음
+      },
+      {
         path: '*',
         element: <h1>404 Not Found</h1>
       }
