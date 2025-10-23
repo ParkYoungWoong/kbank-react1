@@ -16,6 +16,7 @@ export default function Default() {
         <NavLink to="/about">About</NavLink>
         <NavLink to="/movies">Movies</NavLink>
         <NavLink to="/signin">Sign In</NavLink>
+        <NavLink to="/tanstack">TanStack Query Test</NavLink>
       </header>
       <AnimatePresence>
         <motion.div

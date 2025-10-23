@@ -52,6 +52,10 @@ const router = createBrowserRouter([
         element: null // /api 경로는 React Router가 처리하지 않음
       },
       {
+        path: '/tanstack',
+        Component: dynamic(() => import('./pages/TanStackQuery'))
+      },
+      {
         path: '*',
         element: <h1>404 Not Found</h1>
       }
