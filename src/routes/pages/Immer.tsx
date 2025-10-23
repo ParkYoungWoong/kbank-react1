@@ -7,10 +7,10 @@ export default function App() {
       profile: {
         name: 'Neo',
         age: 22
+      },
+      settings: {
+        theme: 'dark'
       }
-    },
-    settings: {
-      theme: 'dark'
     }
   })
 
@@ -19,7 +19,7 @@ export default function App() {
       draft.user.profile.name = name
     })
     console.log(newState.user.profile === state.user.profile) // false
-    console.log(newState.settings.theme === state.settings.theme) // true
+    console.log(newState.user.settings === state.user.settings) // true
     setState(newState)
   }
 

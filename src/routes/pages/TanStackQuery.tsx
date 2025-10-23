@@ -18,7 +18,7 @@ export default function Test() {
   // useMutation
   const { mutateAsync } = useMutation({
     mutationFn: async function (num: number) {
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
         setTimeout(() => {
           // reject(new Error('Mutation Error!!!!!!'))
           resolve(num + 1) // 처리된 실제 결과
