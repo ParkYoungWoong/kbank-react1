@@ -11,12 +11,13 @@ export default function Default() {
   const location = useLocation()
   return (
     <>
-      <header>
+      <header className="flex gap-2">
         <NavLink to="/">Home</NavLink>
         <NavLink to="/about">About</NavLink>
         <NavLink to="/movies">Movies</NavLink>
         <NavLink to="/signin">Sign In</NavLink>
-        <NavLink to="/tanstack">TanStack Query Test</NavLink>
+        <NavLink to="/tanstack">TanStack Query</NavLink>
+        <NavLink to="/immer">Immer</NavLink>
       </header>
       <AnimatePresence>
         <motion.div
