@@ -1,13 +1,28 @@
-import { useState, Fragment } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { Link, Outlet } from 'react-router'
 import Button from '@/components/Button'
 import Loader from '@/components/Loader'
 import { useMovieStore, useInfiniteMovies } from '@/hooks/movies'
+import { useInView } from 'react-intersection-observer'
 
 export default function Movies() {
   const [inputText, setInputText] = useState('')
   const setSearchText = useMovieStore(s => s.setSearchText)
-  const { data, isFetching: loading, fetchNextPage } = useInfiniteMovies()
+  const {
+    data,
+    isFetching: loading,
+    fetchNextPage,
+    hasNextPage
+  } = useInfiniteMovies()
+  const { ref, inView } = useInView({
+    rootMargin: '0px 0px 200px 0px' // only bottom!
+  })
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage()
+    }
+  }, [inView, hasNextPage])
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -23,10 +38,12 @@ export default function Movies() {
         />
         <Button type="submit">검색</Button>
       </form>
-      {loading ? <Loader /> : null}
       <ul>
         {data?.pages.map((page, index) => (
           <Fragment key={index}>
+            <li>
+              ---------------------------{index + 1}---------------------------
+            </li>
             {page.Search.map(movie => (
               <li key={movie.imdbID}>
                 <Link to={`/movies/${movie.imdbID}`}>{movie.Title}</Link>
@@ -35,7 +52,10 @@ export default function Movies() {
           </Fragment>
         ))}
       </ul>
-      <button onClick={() => fetchNextPage()}>더보기</button>
+      {loading ? <Loader /> : null}
+      <div
+        ref={ref}
+        style={{ display: loading ? 'none' : 'block', height: '10px' }}></div>
       <Outlet />
     </>
   )
